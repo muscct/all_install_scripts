@@ -19,15 +19,13 @@ make
 make check
 make install
 cd ..
-rm -rf szip-2.1.1
-
 
 # zlib only necessary if not compiling with cmake
 # wget http://www.zlib.net/zlib-1.2.11.tar.gz
 # tar -xvzf zlib-1.2.11.tar.gz
 
 # hdf5
-if [[ ! -d szip-2.1.1 ]]; then
+if [[ ! -d hdf5-1.10.1.tar ]]; then
     if [[ ! -a hdf5-1.10.1.tar ]]; then
         wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.10.1.tar
     fi
