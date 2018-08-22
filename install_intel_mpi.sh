@@ -1,20 +1,31 @@
-#############
-# intel mpi #
-#############
-
 set -e # abort script if any commands fail.
 set -o pipefail # pipe exit code of chained commands to rightmost.
 # set -v # print shell input lines as they are read.
 # set -n read commands but do not execute them, used to check for syntax errors, ignored by interactive shells.
 
-source ./utils/get_archive.sh
+###############################
+# Intel MPI Library for Linux #
+###############################
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+source $DIR/utils/get_archive.sh
 
 function edit_silent_cfg {
-    sudo cp silent.cfg silent.cfg.bak
-    sudo bash -c "sed 's/ACCEPT_EULA=decline/ACCEPT_EULA=accept/' silent.cfg |
-    sed 's/#ACTIVATION_LICENSE_FILE=/ACTIVATION_LICENSE_FILE=\/home\/ubuntu\/licenses\/license.lic/' |
-    sed 's/ACTIVATION_TYPE=exist_lic/ACTIVATION_TYPE=license_file/' > silent.cfg.new"
-    sudo mv silent.cfg.new silent.cfg
+
+    if [[ -a silent.cfg ]] ; then
+        echo "Could not find the file $(pwd)/silent.cfg"
+        exit 1
+    fi
+
+    if [[ ! -a silent.cfg.bak ]] ; then
+        sudo cp silent.cfg silent.cfg.bak
+        # sudo bash -c "sed 's/ACCEPT_EULA=decline/ACCEPT_EULA=accept/' silent.cfg | sed 's/#ACTIVATION_LICENSE_FILE=/ACTIVATION_LICENSE_FILE=\/home\/ubuntu\/licenses\/license.lic/' | sed 's/ACTIVATION_TYPE=exist_lic/ACTIVATION_TYPE=license_file/' > silent.cfg.new"
+    fi
+
+    sudo rm -f silent.cfg
+
+    sudo cp $DIR/utils/intel_mpi_silent.cfg silent.cfg
 }
 
 echo "Installing Intel MPI..."

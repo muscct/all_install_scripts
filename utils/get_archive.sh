@@ -19,10 +19,13 @@ function get_archive {
         if [[ ! -a $2 ]]; then
             wget $3
         fi
-        if [[ file $2 | grep -q 'tar archive' ]]
+        if  file $2 | grep -q 'tar archive' ; then
             tar -xvf $2
-        elif [[ file $2 | grep -q 'gzip compressed data' ]]
+        elif file $2 | grep -q 'gzip compressed data' ; then
             tar -xvzf $2 
+        else
+            echo "Unknown file format"
+            exit 1
         fi
         rm -f $2
     fi

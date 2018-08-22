@@ -19,5 +19,11 @@ copy_file $1 parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz
 copy_file $1 parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz
 copy_file $1 szip-2.1.1.tar.gz
 copy_file $1 hdf5-1.10.1.tar
+if [[ -d licenses -a -a license.lic ]] ; then
+    scp -r licenses $1:~/
+    echo "Copied licenses"
+else
+    echo "Could not find licenses, should be in ./licenses/license.lic"
+fi
 
 
