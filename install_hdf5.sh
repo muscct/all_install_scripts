@@ -26,11 +26,11 @@ cd ..
 
 # hdf5
 if [[ ! -d hdf5-1.10.1.tar ]]; then
-    if [[ ! -a hdf5-1.10.1.tar ]]; then
-        wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.10.1.tar
+    if [[ ! -a hdf5-1.10.1.tar.gz ]]; then
+        wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.10.1.tar.gz
     fi
-    tar -xvf hdf5-1.10.1.tar
-    rm -f hdf5-1.10.1.tar
+    tar -xvzf hdf5-1.10.1.tar.gz
+    rm -f hdf5-1.10.1.tar.gz
 fi
 
 export CC=icc
