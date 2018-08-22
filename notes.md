@@ -5,6 +5,7 @@
 [HDF5 + MPI instructions](https://software.intel.com/en-us/articles/performance-tools-for-software-developers-building-hdf5-with-intel-compilers)
 [Running intel MPI](https://software.intel.com/en-us/mpi-developer-guide-linux-running-applications)
 [openMC instructions](https://openmc.readthedocs.io/en/stable/usersguide/install.html)
+scp NCOM_L___ST5V-JBKG3FBM.lic ubuntu@130.56.248.171:~/licences/NCOM_L___ST5V-JBKG3FBM.lic
 
 Michelle Pfeifer:
 - [tuning and analysis utilities](tau.uoregon.edu)

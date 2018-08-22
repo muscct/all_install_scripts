@@ -1,3 +1,18 @@
+####################
+# Get Dependencies #
+####################
+
+sudo apt install -q -y libxml2-dev
+sudo apt install -q -y libxslt-dev
+sudo apt install -q -y libfreetype6-dev
+sudo apt install -q -y pkg-config
+sudo apt install -q -y libpng12-dev
+sudo python -m pip install pip==9.0.3 --upgrade --force-reinstall
+pip install numpy
+
+###############
+# Make OpenMC #
+###############
 git clone https://github.com/mit-crpg/openmc.git
 cd openmc
 omcPath=$(pwd)
