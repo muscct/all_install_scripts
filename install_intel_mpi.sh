@@ -12,7 +12,7 @@ if [[ ! -d l_mpi_2018.3.222 ]]; then
 fi
 # install
 cd l_mpi_2018.3.222
-edit_silent_cfg()
+edit_silent_cfg
 sudo bash install.sh --silent silent.cfg
 cd ..
 
@@ -61,7 +61,7 @@ source /opt/intel/compilers_and_libraries_2018.3.222/linux/mpi/intel64/bin/mpiva
 # TODO: source mpivars.sh script from intel64/bin/
 # TODO: source any required *{icc, ifort}vars.sh scripts.
 
-function edit_silent_cfg() {
+function edit_silent_cfg {
     cp silent.cfg silent.cfg.bak
     sudo bash -c "sed 's/ACCEPT_EULA=decline/ACCEPT_EULA=accept/' silent.cfg > silent.cfg.new"
     sudo bash -c "sed 's/#ACTIVATION_LICENSE_FILE=/ACTIVATION_LICENSE_FILE=\/home\/ubuntu\/licenses\/license.lic/' silent.cfg > silent.cfg.new"
