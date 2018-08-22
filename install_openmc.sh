@@ -2,11 +2,10 @@ git clone https://github.com/mit-crpg/openmc.git
 cd openmc
 omcPath=$(pwd)
 git checkout master
+rm -rf build
 mkdir build
 cd build
-export FC=mpiifort
-export CC=mpicc
-cmake -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=$omcPath/install .. 
+cmake CC=mpicc FC=mpiifort -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=$omcPath/install .. 
 make
 # mkdir -p $omcPath/install/lib/python2.7/site-packages
 # mkdir $omcPath/backup
