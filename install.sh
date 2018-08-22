@@ -12,13 +12,7 @@ function confirm() {
     esac
 }
 
-mkdir licenses
-echo "Please download the Intel® Parallel Studio XE Cluster Edition for Linux license from:" &&
-echo "  https://registrationcenter.intel.com/en/products/license/" &&
-echo "And scp the license into:" &&
-echo "  ubuntu@<ip>:$(pwd)/licenses/license.lic."
-confirm "Press any key to continue..."
-
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 LINPACK=false
 HPCG=false
@@ -27,9 +21,10 @@ SEISSOL=false
 HOROVOD=false
 HELP=false
 CONCURRENT=false
+INTEL_MPI=false
 
 POSITIONAL=()
-while [[ $# -gt 0 ]] do
+while [[ $# -gt 0 ]] ; do
     key="$1"
 
     case $key in
@@ -42,7 +37,7 @@ while [[ $# -gt 0 ]] do
         LINPACK=true
         shift # past argument
         ;;
-        -s|--seisol|-a|--all)
+        -s|--seissol|-a|--all)
         SEISSOL=true
         shift # past argument
         ;;
@@ -52,6 +47,10 @@ while [[ $# -gt 0 ]] do
         ;;
         -hv|--horovod|-a|--all)
         HOROVOD=true
+        shift # past argument
+        ;;
+        -i|--intel-mpi)
+        INTEL_MPI=true
         shift # past argument
         ;;
         -h|--help)
@@ -70,20 +69,41 @@ while [[ $# -gt 0 ]] do
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-if [[ HELP ]] 
+
+for var in LINPACK HPCG OPENMC SEISSOL HOROVOD HELP CONCURRENT INTEL_MPI ; do
+    echo "$var: ${!var}"
+done
+
+echo "LINPACK:$LINPACK"
+echo "HPCG:$HPCG"
+
+if [ "$HELP" = true ] ; then
     echo "Installs scc programs and their dependencies. Intel MPI is installed by default."
     echo "Options:"
-    echo "  -h, --help: print this help message"
     echo "  -l, --linpack: install LINPACK"
     echo "  -hc, -hpcg: install High Performance Conjugate Gradients"
     echo "  -o, --openmc: install OpenMC and HDF5"
     echo "  -s, --seissol: install SeisSol and HDF5"
     echo "  -hv, --horovod: install Horovod"
+    echo "  -i, --intel-mpi: install only the intel MPI"
     echo "  -a, --all: install all of the above"
     echo "  -c, --concurrent: perform installations at once"
-elif [[ ! LINPACK -a ! HPCG -a ! OPENMC -a ! SEISOL -a ! HOROVOD ]] then;
+    echo "  -h, --help: print this help message"
+    exit 0
+elif [ "$LINPACK" = false ] && [ "$HPCG" = false ] && [ "$OPENMC" = false ] && [ "$SEISSOL" = false ] && [ "$HOROVOD" = false ] && [ "$INTEL_MPI" = false ] ; then
     echo "No programs were selected for install, no changes have been made. Use -h for help."
     exit 0
+fi
+
+if [[ ! -d /home/ubuntu/licenses ]]; then
+    mkdir licenses
+fi
+if [[ ! -f /home/ubuntu/licenses/license.lic ]] ; then
+    echo "Please download the Intel® Parallel Studio XE Cluster Edition for Linux license from:" &&
+    echo "  https://registrationcenter.intel.com/en/products/license/" &&
+    echo "And scp the license into:" &&
+    echo "  ubuntu@<ip>:/home/ubuntu/licenses/license.lic."
+    confirm "Press enter to continue..."
 fi
 
 #####################
@@ -100,58 +120,52 @@ sudo apt install -q -y cmake
 sudo apt install -q -y python-dev
 sudo apt install -q -y python-pip
 
-if [ "$OPENMC" = true ] ; then
-# openMC dependencies
-    
-    # alias python=python3
-fi
-
-sudo bash install_intel_mpi.sh
+sudo bash $DIR/install_intel_mpi.sh
 
 if [ "$LINPACK" = true ] ; then
     if [ "$CONCURRENT" = true ] ; then
-        sudo bash install_linpack.sh &
+        sudo bash $DIR/install_linpack.sh &
     else
-        sudo bash install_linpack.sh
+        sudo bash $DIR/install_linpack.sh
     fi        
 fi
 
 if [ "$HPCG" = true ] ; then
     if [ "$CONCURRENT" = true ] ; then
-        sudo bash install_hpcg.sh &
+        sudo bash $DIR/install_hpcg.sh &
     else
-        sudo bash install_hpcg.sh
+        sudo bash $DIR/install_hpcg.sh
     fi    
 fi
 
 if [ "$OPENMC" = true -o "$SEISSOL" = true ] ; then
     if [ "$CONCURRENT" = true ] ; then
-        sudo bash install_hdf5.sh &
+        sudo bash $DIR/install_hdf5.sh &
     else
-        sudo bash install_hdf5.sh
+        sudo bash $DIR/install_hdf5.sh
     fi    
 fi
 
 if [ "$OPENMC" = true ] ; then
     if [ "$CONCURRENT" = true ] ; then
-        sudo bash install_openmc.sh &
+        sudo bash $DIR/install_openmc.sh &
     else
-        sudo bash install_openmc.sh
+        sudo bash $DIR/install_openmc.sh
     fi    
 fi
 
 if [ "$SEISSOL" = true ] ; then
     if [ "$CONCURRENT" = true ] ; then
-        sudo bash install_seisol.sh &
+        sudo bash $DIR/install_seissol.sh &
     else
-        sudo bash install_seisol.sh
+        sudo bash $DIR/install_seissol.sh
     fi    
 fi
 
 if [ "$HOROVOD" = true ] ; then
     if [ "$CONCURRENT" = true ] ; then
-        sudo bash install_horovod.sh &
+        sudo bash $DIR/install_horovod.sh &
     else
-        sudo bash install_horovod.sh
+        sudo bash $DIR/install_horovod.sh
     fi    
 fi
