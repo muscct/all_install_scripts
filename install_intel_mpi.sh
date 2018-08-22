@@ -13,12 +13,12 @@ source $DIR/utils/get_archive.sh
 
 function edit_silent_cfg {
 
-    if [[ -a silent.cfg ]] ; then
+    if [[ ! -f $(pwd)/silent.cfg ]] ; then
         echo "Could not find the file $(pwd)/silent.cfg"
         exit 1
     fi
 
-    if [[ ! -a silent.cfg.bak ]] ; then
+    if [[ ! -f silent.cfg.bak ]] ; then
         sudo cp silent.cfg silent.cfg.bak
         # sudo bash -c "sed 's/ACCEPT_EULA=decline/ACCEPT_EULA=accept/' silent.cfg | sed 's/#ACTIVATION_LICENSE_FILE=/ACTIVATION_LICENSE_FILE=\/home\/ubuntu\/licenses\/license.lic/' | sed 's/ACTIVATION_TYPE=exist_lic/ACTIVATION_TYPE=license_file/' > silent.cfg.new"
     fi
@@ -35,7 +35,7 @@ echo "Installing Intel MPI..."
 echo "Getting Intel MPI Library for Linux..."
 get_archive l_mpi_2018.3.222 l_mpi_2018.3.222.tgz http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13063/l_mpi_2018.3.222.tgz
 # if [[ ! -d l_mpi_2018.3.222 ]]; then
-#     if [[ ! -a l_mpi_2018.3.222.tgz ]]; then
+#     if [[ ! -f l_mpi_2018.3.222.tgz ]]; then
 #         wget http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13063/l_mpi_2018.3.222.tgz
 #     fi
 #     tar -xvzf l_mpi_2018.3.222.tgz 
@@ -58,7 +58,7 @@ cd ..
 echo "Getting Intel MPI Fortran Compiler..."
 get_archive parallel_studio_xe_2018_update3_composer_edition_for_fortran, parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13004/parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz
 # if [[ ! -d  ]]; then
-#     if [[ ! -a parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz ]]; then
+#     if [[ ! -f parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz ]]; then
 #         wget http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13004/parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz 
 #     fi
 #     tar -xvzf parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz 
@@ -81,7 +81,7 @@ cd ..
 echo "Getting Intel MPI C++ Compiler..."
 get_archive parallel_studio_xe_2018_update3_composer_edition_for_cpp parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13003/parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz
 # if [[ ! -d parallel_studio_xe_2018_update3_composer_edition_for_cpp ]]; then
-#     if [[ ! -a parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz ]]; then
+#     if [[ ! -f parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz ]]; then
 #         wget http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13003/parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz
 #     fi
 #     tar -xvzf parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz

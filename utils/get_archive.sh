@@ -16,7 +16,7 @@ function get_archive {
     fi
 
     if [[ ! -d $1 ]]; then
-        if [[ ! -a $2 ]]; then
+        if [[ ! -f $2 ]]; then
             wget $3
         fi
         if  file $2 | grep -q 'tar archive' ; then

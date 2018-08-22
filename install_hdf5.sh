@@ -9,7 +9,7 @@ set -o pipefail # pipe exit code of chained commands to rightmost.
 
 # szip dependency
 if [[ ! -d szip-2.1.1 ]]; then
-    if [[ ! -a szip-2.1.1.tar.gz ]]; then
+    if [[ ! -f szip-2.1.1.tar.gz ]]; then
         wget https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz
     fi
     tar -xvzf szip-2.1.1.tar.gz
@@ -29,7 +29,7 @@ cd ..
 
 # hdf5
 if [[ ! -d hdf5-1.10.1.tar ]]; then
-    if [[ ! -a hdf5-1.10.1.tar.gz ]]; then
+    if [[ ! -f hdf5-1.10.1.tar.gz ]]; then
         wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.10.1.tar.gz
     fi
     tar -xvzf hdf5-1.10.1.tar.gz
