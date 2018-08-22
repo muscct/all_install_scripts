@@ -25,10 +25,17 @@ pip install numpy
 
 wget http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13063/l_mpi_2018.3.222.tgz
 tar -xvzf l_mpi_2018.3.222.tgz 
+rm -f l_mpi_2018.3.222.tgz
 cd l_mpi_2018.3.222
-sudo bash install.sh
+cp silent.cfg silent.cfg.bak
+sed 's/ACCEPT_EULA=decline/ACCEPT_EULA=accept/g' silent.cfg > silent.cfg
+sudo bash install.sh --silent silent.cfg
 # find / -name "mpivars*"
+
 source /opt/intel/compilers_and_libraries_2018.3.222/linux/mpi/intel64/bin/mpivars.sh
+# source mpivars.sh script from intel64/bin/
+# source any required *{icc, ifort}vars.sh scripts.
+
 cd ..
 
 ########
@@ -40,25 +47,39 @@ cd ..
 # szip dependency
 wget https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz
 tar -xvzf szip-2.1.1.tar.gz
-cd szip-2.1
+rm -f szip-2.1.1.tar.gz 
+cd szip-2.1.1
 mkdir /home/ubuntu/szip
 ./configure --prefix=/home/ubuntu/szip
 make
 make check
 make install
 cd ..
+rm -rf szip-2.1.1
+
 
 # zlib only necessary if not compiling with cmake
 # wget http://www.zlib.net/zlib-1.2.11.tar.gz
 # tar -xvzf zlib-1.2.11.tar.gz
 
+
+# Intel MPI Fortran Compiler
+wget http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13004/parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz
+tar -xvzf parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz 
+rm -f parallel_studio_xe_2018_update3_composer_edition_for_fortran.tgz 
+
+# Intel MPI C++ Compiler 
+wget http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13003/parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz
+tar -xvzf parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz
+rm -f parallel_studio_xe_2018_update3_composer_edition_for_cpp.tgz
+
 # hdf5
 wget https://support.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.10.1.tar
 tar -xvf hdf5-1.10.1.tar
+rm -f hdf5-1.10.1.tar
 # https://github.com/HDFGroup/build_hdf5
 # https://support.hdfgroup.org/ftp/HDF5/current/src/unpacked/release_docs/INSTALL_parallel
 # https://support.hdfgroup.org/HDF5/release/obtainsrc.html
-
 
 git clone https://github.com/mit-crpg/openmc.git
 cd openmc
