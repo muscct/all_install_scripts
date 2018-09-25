@@ -8,7 +8,8 @@ curDate=$( date +"%m-%d-%y" )
 APP_SLACK_WEBHOOK="https://hooks.slack.com/services/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"
 channel="dell-server-messages"
 APP_SLACK_USERNAME="dell_poweredge"
-APP_SLACK_ICON_EMOJI="🖳"
+# APP_SLACK_ICON_EMOJI="🖳"
+APP_SLACK_ICON_EMOJI="U+1F5B3"
 
 send_message() {
   # echo 'Sending to '${channel}'...'
@@ -23,13 +24,16 @@ send_message() {
 }
 
 if [ -f $OLD_IP ]; then
-  if [[ '$GETIPADDR' = $(< $OLD_IP) ]]; then
-    echo $curDate $timestamp " IP address check: " $(< $OLD_IP) >> $LOG
+  if [[ "$($GETIPADDR)" = "$(cat $OLD_IP)" ]]; then     
+    echo $curDate $timestamp " IP Address check: " $(< $OLD_IP) >> $LOG;
   else
     $GETIPADDR > $OLD_IP
-    send_message $(cat $OLD_IP)
+    echo $curDate $timestamp " IP Address changed to: "$(cat $OLD_IP) >> $LOG
+    send_message "[Warning] IP Address changed to: "$(cat $OLD_IP)
 fi
 else
-  message=$(cat $OLD_IP)
-  send_message $(cat $OLD_IP)
+  $GETIPADDR > $OLD_IP
+  echo $curDate $timestamp " Keeping track of IP in "$OLD_IP >> $LOG
+  echo $curDate $timestamp " IP Address changed to: "$(cat $OLD_IP) >> $LOG
+  send_message "[Warning] IP Address changed to: "$(cat $OLD_IP)
 fi
