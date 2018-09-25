@@ -10,16 +10,16 @@ channel="dell-server-messages"
 APP_SLACK_USERNAME="dell_poweredge"
 APP_SLACK_ICON_EMOJI="🖳"
 
-if [ -f $NOWIPADDR ]; then
-  if [[ `$GETIPADDR` = $(< $NOWIPADDR) ]]; then
-    echo $curDate $timestamp " IP address check: " $(< $NOWIPADDR) >> $LOG
+if [ -f $OLD_IP ]; then
+  if [[ `$GETIPADDR` = $(< $OLD_IP) ]]; then
+    echo $curDate $timestamp " IP address check: " $(< $OLD_IP) >> $LOG
   else
-    $GETIPADDR > $NOWIPADDR
-    send_message $NOWIPADDR
+    $GETIPADDR > $OLD_IP
+    send_message $OLD_IP
 fi
 else
-  curl $GETIPADDR > $NOWIPADDR
-  send_message $NOWIPADDR
+  curl $GETIPADDR > $OLD_IP
+  send_message $OLD_IP
 fi
 
 send_message() {
