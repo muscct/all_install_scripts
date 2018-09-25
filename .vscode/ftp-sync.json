@@ -1,0 +1,24 @@
+{
+    "remotePath": "/home/scc-monash/all_install_scripts",
+    "host": "130.194.140.108",
+    "username": "scc-monash",
+    "password": "luhanisking",
+    "port": 21,
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": true,
+    "passive": false,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store"
+    ],
+    "generatedFiles": {
+        "uploadOnSave": false,
+        "extensionsToInclude": [],
+        "path": ""
+    }
+}
