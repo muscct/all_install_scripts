@@ -1,9 +1,6 @@
-mkdir -p /home/ubuntu/openmc
+mkdir -p $HOME/openmc
 
-# cur=$(pwd)
-# cd ~/openmcHome
-# openmcHome=$(pwd)
-# cd $cur
+cd $HOME/openmc
 
 wget https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_4/hdf5-1.10.4.tar.gz
 tar -xvzf hdf5-1.10.4.tar.gz

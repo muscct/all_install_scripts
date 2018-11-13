@@ -1,0 +1,27 @@
+Above is the PDF that monash sent us describing what to do with openmc. I'll describe it here as well as the rest of the current situation.
+1. OpenMC is installed on cyclecloud, ssh in to the box according to grace's pinned post in general to follow along.
+2. The scripts I have used can all be found in https://github.com/muscct/all_install_scripts
+3. The commands to build OpenMC currently reside in the "parallelise.py" script in the "parallelise" folder. It's a bit of a mess since the script was designed to deploy OpenMC to a master node and multiple child nodes on cyclecloud. Basically it boils down to the following:
+    sudo apt update
+    sudo apt install -q -y libxml2-dev libxslt-dev libfreetype6-dev pkg-config libpng12-dev libxml2-dev libxslt-dev libfreetype6-dev pkg-config openmpi-bin libopenmpi-dev libpng12-dev git gfortran g++ cmake python-dev python-pip openmpi-bin libopenmpi-dev
+    sudo python -m pip install pip==9.0.3 --upgrade --force-reinstall
+    sudo pip install numpy six scipy pandas h5py matplotlib uncertainties lxml cython vtk silomesh pytest
+    cd $HOME
+    git clone https://github.com/mit-crpg/openmc.git
+    wget https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_4/hdf5-1.10.4.tar.gz
+    tar -xvzf hdf5-1.10.4.tar.gz
+    cd $HOME/hdf5-1.10.4
+    sudo CC=mpicc FC=mpifort ./configure --enable-parallel --enable-shared --prefix=$HOME/openmc --with-zlib --enable-fortran
+    sudo make
+    sudo make install
+    cd $HOME/openmc
+    git checkout master
+    rm -rf build
+    mkdir build
+    cd build
+    CC=mpicc FC=mpifort HDF5_ROOT=$HOME/openmc/bin cmake -DHDF5_PREFER_PARALLEL=on -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=$HOME/openmc/install $HOME/openmc
+    make
+4. Some notes on the above: Firstly everything is installed locally in $HOME/openmc and $HOME/hdf5-1.10.4. It uses the latest versions of hdf5 which is different to the version of hdf5 in Luhan's Seissol script. I have omitted the step of simlinking mpi.mod from openmpi to the $HOME/openmc/include. I'll add this later. This script should work on any ubuntu machine.
+5. OpenMC needs two things to run. Firstly, it needs a file ```cross_sections.xml```. This contains cross-sections for each nuclide. To generate this after installing openmc, run ```$HOME/openmc/scripts/openmc-get-nnds-data```. This will drop a ```cross_seciton.xml``` file in $HOME/openmc/scripts. Secondly, you need the openmc data which is currently in $HOME/openmcData. Secondly, it needs the files: ```materials.xml```,  ```geometry.xml```, ```settings.xml``` and ```tallies.xml```. These can be found in ```$HOME/openmcData/INPUT/comp_files_final/competition_files```. There are three datsets, which must all be run. To run the simulation, run: ```OPENMC_CROSS_SECTIONS=<PATH_TO_CROSS_SECTIONS_XML>  $HOME/openmc/build/bin/openmc <PATH_TO_PROBLEM_DIRECTORY>```. eg. ```OPENMC_CROSS_SECTIONS=$HOME/openmc/scripts/cross_sections.xml $HOME/openmc/build/bin/openmc $HOME/openmcData/INPUT/comp_files_final/competition_files/assembly/1```
+6. Running OpenMC in parallel has to wait until Andy fixes the busted cyclecloud yet again, hence sleepy time now. I really think we should wait on this until tomorrow morning to run the simulations, but if you want to try it tonight I won't stop you.
+

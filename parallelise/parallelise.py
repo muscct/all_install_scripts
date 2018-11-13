@@ -104,9 +104,22 @@ runCommandsOnChildren([
 
 # install openmc
 runCommandsOnMaster([
-    "sudo apt install -q -y libxml2-dev libxslt-dev libfreetype6-dev pkg-config libpng12-dev libxml2-dev libxslt-dev libfreetype6-dev pkg-config libpng12-dev git gfortran g++ cmake python-dev python-pip openmpi-bin libopenmpi-dev",
-    "sudo python -m pip install pip==9.0.3 --upgrade --force-reinstall",
-    "sudo pip install numpy six scipy pandas h5py matplotlib uncertainties lxml cython vtk silomesh pytest",
+    "sudo apt install -q -y libxml2-dev libxslt-dev libfreetype6-dev pkg-config libpng12-dev libxml2-dev libxslt-dev libfreetype6-dev pkg-config libpng12-dev git gfortran g++ cmake python-dev python-pip python3-pip openmpi-bin libopenmpi-dev python-tk",
+    # "sudo python -m pip install pip==9.0.3 --upgrade --force-reinstall",
+    # "sudo python3 -m pip3 install pip==9.0.3 --upgrade --force-reinstall",
+    # "sudo pip install numpy six scipy pandas h5py matplotlib uncertainties lxml cython vtk silomesh pytest",
+    "/usr/local/bin/pip install numpy",
+    "/usr/local/bin/pip install six",
+    "/usr/local/bin/pip install scipy",
+    "/usr/local/bin/pip install pandas",
+    "/usr/local/bin/pip install h5py",
+    "/usr/local/bin/pip install matplotlib",
+    "/usr/local/bin/pip install uncertainties",
+    "/usr/local/bin/pip install lxml",
+    "/usr/local/bin/pip install cython",
+    "/usr/local/bin/pip install vtk",
+    "/usr/local/bin/pip install silomesh",
+    "/usr/local/bin/pip install pytest",
     "cd $HOME",
     "git clone https://github.com/mit-crpg/openmc.git",
     "wget https://s3.amazonaws.com/hdf-wordpress-1/wp-content/uploads/manual/HDF5/HDF5_1_10_4/hdf5-1.10.4.tar.gz",
@@ -122,6 +135,18 @@ runCommandsOnMaster([
     "mkdir build",
     "cd build",
     "CC=mpicc FC=mpifort HDF5_ROOT=$HOME/openmc/bin cmake -DHDF5_PREFER_PARALLEL=on -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=$HOME/openmc/install $HOME/openmc",
-    "make"
+    "make",
+    "cp $HOME/openmc/scripts/openmc-get-nndc-data .",
+    "cp $HOME/openmc/scripts/openmc-ace-to-hdf5 .",
+    "$HOME/openmc/openmc-get-nndc-data",
+    "rm -f ./ENDF-B-VII.1-neutron-293.6K.tar.gz",
+    "rm -f ./ENDF-B-VII.1-tsl.tar.gz",
+    "rm -rf ./nndc",
+    # "/nndc_hdf5/cross_sections.xml"
+    # "mv ENDF-B-VII.1-neutron-293.6K.tar.gz $HOME/openmcData",
+    "OPENMC_CROSS_SECTIONS=./nndc_hdf5/cross_sections.xml /mnt/openmc/build/bin/openmc /mnt/openmcData/INPUT/comp_files_final/competition_files/assembly/1",
+    "OPENMC_CROSS_SECTIONS=$HOME/openmc/nndc_hdf5/cross_sections.xml $HOME/openmc/build/bin/openmc $HOME/openmcData/INPUT/comp_files_final/competition_files/assembly_large/1"
+    "OPENMC_CROSS_SECTIONS=$HOME/openmc/nndc_hdf5/cross_sections.xml $HOME/openmc/build/bin/openmc $HOME/openmcData/INPUT/comp_files_final/competition_files/pincell/100000/120/1"
+
     
 ])
