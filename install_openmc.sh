@@ -20,7 +20,9 @@ git checkout master
 rm -rf build
 mkdir build
 cd build
-cmake CC=mpicc FC=mpiifort -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=$omcPath/install .. 
+# cmake CC=mpicc FC=mpifort HDF5_ROOT=/home/ubuntu/hdf5-1.8.13 -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=/home/ubuntu/openmc/install /home/ubuntu/openmc
+# cmake CC=mpicc FC=mpifort PATH=$PATH:/home/ubuntu/openmc/bin -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=/home/ubuntu/openmc/install /home/ubuntu/openmc
+CC=mpicc FC=mpifort HDF5_ROOT=$HOME/openmc/bin cmake -DHDF5_PREFER_PARALLEL=on -Ddebug=on -Doptimize=on -DCMAKE_INSTALL_PREFIX=$HOME/openmc/install $HOME/openmc
 make
 # mkdir -p $omcPath/install/lib/python2.7/site-packages
 # mkdir $omcPath/backup
