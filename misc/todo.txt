@@ -1,0 +1,8 @@
+openMC on cloud
+openMC on boxes
+fix weird left over infiniband dependancies so that MPI tasks run on boxes
+Seissol on boxes
+Get seissol to scale size of datasets with pumgen (talk to u of i)
+rob an ssd from dell / format second disk as seissol dataset storage
+Power management script (dont override nvidia smi commands - set powerlim to 150V on both servers)
+

@@ -1,0 +1,1 @@
+omreport chassis pwrmonitoring | sed -n '7p' | sed 's/Reading.*\: \([0-9]*\) W/\1/g'

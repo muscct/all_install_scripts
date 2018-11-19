@@ -1,0 +1,8 @@
+ssh watkinsc@msgln6.its.monash.edu
+password: iamg00d45
+
+ssh hpcuser@130.194.85.55 -i id_rsa
+
+ssh scc-monash@130.194.140.108
+
+
